@@ -1,0 +1,8 @@
+<h1>Активні опитування</h1>
+<ul>
+    {% for poll in polls %}
+        <li><a href="{% url 'poll_question' poll.id 1 %}">{{ poll.title }}</a></li>
+    {% empty %}
+        <li>Немає активних опитувань.</li>
+    {% endfor %}
+</ul>

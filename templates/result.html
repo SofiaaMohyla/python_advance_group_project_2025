@@ -1,0 +1,9 @@
+<h2>Результати опитування: {{ poll.title }}</h2>
+{% for question, choices in results.items %}
+    <h4>{{ question }}</h4>
+    <ul>
+        {% for text, count in choices %}
+            <li>{{ text }} — {{ count }} голосів</li>
+        {% endfor %}
+    </ul>
+{% endfor %}

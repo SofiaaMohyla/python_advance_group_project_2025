@@ -1,0 +1,9 @@
+<h2>{{ poll.title }}</h2>
+<p>Питання {{ question_number }}: {{ question.text }}</p>
+<form method="post">
+    {% csrf_token %}
+    {% for choice in question.choices.all %}
+        <label><input type="radio" name="choice" value="{{ choice.id }}"> {{ choice.text }}</label><br>
+    {% endfor %}
+    <button type="submit">Далі</button>
+</form>
