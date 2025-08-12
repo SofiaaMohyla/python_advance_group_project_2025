@@ -3,15 +3,37 @@ from django.conf import settings
 from authentication.models import CustomUser
 
 # Create your models here.
-
-class Poll(models.Model):
-    question = models.CharField(max_length=255, blank=True, null=True)
-    answer_a = models.CharField(max_length=255, blank=True, null=True)
-    answer_b = models.CharField(max_length=255, blank=True, null=True)
-    answer_c = models.CharField(max_length=255, blank=True, null=True)
+class Test(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='polls')
 
     def __str__(self):
-        return f"{self.question} ({self.created_at})"
+        return self.title
+    
+class Question(models.Model):
+    test = models.ForeignKey(Test, on_delete=models.CASCADE, related_name='questions')
+    text = models.CharField(max_length=500)
 
+    def __str__(self):
+        return self.text
+    
+class Choice(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='choices')
+    text = models.CharField(max_length=500)
+
+    def __str__(self):
+        return self.text
+
+class Answer(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'test', 'question')
+
+    def __str__(self):
+        return f" {self.user} - {self.test} - {self.question}"
