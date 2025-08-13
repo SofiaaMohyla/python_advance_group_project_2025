@@ -36,3 +36,7 @@ footer {
     color: white;
     padding: 10px 0;
 }
+.fixed-img {
+    height: 200px;
+    object-fit: cover;
+}
