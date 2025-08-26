@@ -10,4 +10,5 @@ urlpatterns = [
     path('lessons/class/new/', views.LessonCreateView.as_view(), name='lesson_create_class'),
     path('lessons/class/<int:pk>/edit/', views.LessonUpdateView.as_view(), name='lesson_update_class'),
     path('lessons/class/<int:lesson_id>/grades/new/', views.GradeCreateView.as_view(), name='grade_create_class'),
+    path('grades/', views.grade_list, name='grade_list'),
 ]

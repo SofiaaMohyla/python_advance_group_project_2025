@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from .models import Lesson, Grade
 from .forms import LessonForm, GradeForm
@@ -66,3 +67,21 @@ class GradeCreateView(CreateView):
 
     def get_success_url(self):
         return reverse_lazy('lesson_detail', kwargs={'pk': self.kwargs['lesson_id']})
+
+class LessonDeleteView(DeleteView):
+    model = Lesson
+    template_name = 'diary/lesson_confirm_delete.html'
+    success_url = reverse_lazy('lesson_list')  # після видалення повертає на список уроків
+
+class GradeDeleteView(DeleteView):
+    model = Grade
+    template_name = 'diary/grade_confirm_delete.html'
+
+    def get_success_url(self):
+        # після видалення повертає на деталі уроку, до якого належала оцінка
+        return reverse_lazy('lesson_detail', kwargs={'pk': self.object.lesson.pk})
+
+@login_required
+def grade_list(request):
+    grades = Grade.objects.filter(student=request.user).select_related('lesson').order_by('-lesson__date')
+    return render(request, 'diary/grade_list.html', {'grades': grades})
