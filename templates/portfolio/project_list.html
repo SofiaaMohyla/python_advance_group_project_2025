@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Проекти користувачів</h1>
+<a href="{% url 'project-create' %}" class="btn btn-primary">Додати новий проект</a>
+
+<div class="projects">
+    {% for project in projects %}
+        <div class="project-card">
+            <h3><a href="{% url 'project-detail' project.pk %}">{{ project.title }}</a></h3>
+            <p>Автор: {{ project.user.username }}</p>
+            <p>{{ project.desc|truncatewords:20 }}</p>
+        </div>
+    {% empty %}
+        <p>Проектів поки що немає.</p>
+    {% endfor %}
+</div>
+{% endblock %}

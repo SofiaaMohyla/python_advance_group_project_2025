@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ project.title }}</h1>
+<p>Автор: {{ project.user.username }}</p>
+<p>{{ project.desc }}</p>
+
+{% if project.link %}
+<p>Посилання: <a href="{{ project.link }}" target="_blank">{{ project.link }}</a></p>
+{% endif %}
+
+{% if project.file %}
+<p>Файл: <a href="{{ project.file.url }}" download>{{ project.file.name }}</a></p>
+{% endif %}
+
+<h3>Скріншоти</h3>
+<div class="images">
+    {% for img in project.project_images.all %}
+        <img src="{{ img.image.url }}" alt="Project image" style="max-width:200px; margin:5px;">
+    {% empty %}
+        <p>Скріншотів немає.</p>
+    {% endfor %}
+</div>
+
+{% if user == project.user %}
+    <a href="{% url 'project-update' project.pk %}" class="btn btn-warning">Редагувати</a>
+    <a href="{% url 'project-delete' project.pk %}" class="btn btn-danger">Видалити</a>
+{% endif %}
+
+<a href="{% url 'project-list' %}" class="btn btn-secondary">Назад до списку</a>
+{% endblock %}
