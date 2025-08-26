@@ -21,12 +21,14 @@ class Question(models.Model):
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='choices')
     text = models.CharField(max_length=500)
+    is_correct = models.BooleanField(default=False)
+    img = models.ImageField(upload_to="choice_img", blank=True, null=True)
 
     def __str__(self):
         return self.text
 
 class Answer(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)

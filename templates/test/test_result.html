@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Test Result</h1>
+  <p>Your score: {{ score }}</p>
+  <a href="{% url 'take_test' %}">Take another test</a>
+{% endblock %}
