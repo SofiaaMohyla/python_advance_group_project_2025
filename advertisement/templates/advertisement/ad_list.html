@@ -1,0 +1,26 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+  <h1>Оголошення</h1>
+  {% if user.is_authenticated %}
+    <a href="{% url 'advertisement:ad_create' %}">Додати оголошення</a>
+  {% endif %}
+  <ul>
+    {% for ad in ads %}
+      <li>
+        <strong>{{ ad.title }}</strong> - автор: {{ ad.author.username }}<br>
+        {{ ad.description }}<br>
+        Ціна: {{ ad.price }}<br>
+        {% if ad.image %}
+          <img src="{{ ad.image.url }}" alt="Фото оголошення" width="200">
+        {% endif %}
+        {% if user == ad.author or user.is_staff %}
+          <br><a href="{% url 'advertisement:ad_edit' ad.pk %}">Редагувати</a>
+          <a href="{% url 'advertisement:ad_delete' ad.pk %}">Видалити</a>
+        {% endif %}
+      </li>
+    {% empty %}
+      <li>Оголошень немає</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
