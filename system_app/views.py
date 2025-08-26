@@ -59,6 +59,18 @@ class ChoiceCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
     def get_success_url(self):
         return reverse('choice_create', kwargs={'question_id': self.object.question.id})
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        question = get_object_or_404(Question, id=self.kwargs['question_id'])
+        choices = question.choices.all()
+
+        context['question'] = question
+        context['choices'] = choices
+        # 👉 логіка винесена з шаблону
+        context['enough_choices'] = choices.count() >= 2
+        context['has_correct'] = choices.filter(is_correct=True).exists()
+        return context
 
 
 class TakeTestView(LoginRequiredMixin, DetailView):

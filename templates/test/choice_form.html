@@ -7,6 +7,25 @@
     {{ form.as_p }}
     <button type="submit">Додати ще варіант</button>
 </form>
+<hr>
+<h3>Вже додані варіанти:</h3>
+<ul>
+    {% for c in choices %}
+        <li>
+            {{ c.text }} {% if c.is_correct %}(правильний){% endif %}
+            {% if c.img %}
+                <br><img src="{{ c.img.url }}" style="max-width:120px;">
+            {% endif %}
+        </li>
+    {% empty %}
+        <li>Ще немає варіантів</li>
+    {% endfor %}
+</ul>
+
+{% if enough_choices and has_correct %}
+    <a href="{% url 'test_list' %}" class="btn btn-success">✅ Завершити створення тесту</a>
+    <a href="{% url 'question_create' test_id=question.test.id %}" class="btn btn-primary">➕ Додати ще питання</a>
+{% endif %}
 {% endblock %}
 
 
