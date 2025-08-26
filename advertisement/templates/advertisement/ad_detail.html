@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="mb-3">{{ ad.title }}</h2>
+
+{% if ad.image %}
+  <img src="{{ ad.image.url }}" alt="{{ ad.title }}" class="img-fluid mb-3 rounded">
+{% endif %}
+
+<p class="lead">{{ ad.content }}</p>
+
+<p class="text-muted">
+  Автор: {{ ad.author }} |
+  Дата: {{ ad.created_at|date:"d.m.Y H:i" }}
+</p>
+
+{% if user.is_authenticated and (user.is_superuser or user.role == 'moderator' or user.role == 'admin') %}
+  <a href="{% url 'ad_update' ad.pk %}" class="btn btn-warning">Редагувати</a>
+  <a href="{% url 'ad_delete' ad.pk %}" class="btn btn-danger">Видалити</a>
+{% endif %}
+
+<a href="{% url 'ad_list' %}" class="btn btn-secondary mt-2">← Назад</a>
+{% endblock %}

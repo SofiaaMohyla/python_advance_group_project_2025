@@ -1,16 +1,16 @@
 from django.urls import path
 from .views import (
     AdvertisementListView,
+    AdvertisementDetailView,
     AdvertisementCreateView,
     AdvertisementUpdateView,
     AdvertisementDeleteView,
 )
 
-app_name = "advertisement"
-
 urlpatterns = [
-    path("", AdvertisementListView.as_view(), name="list"),
-    path("new/", AdvertisementCreateView.as_view(), name="create"),
-    path("<int:pk>/update/", AdvertisementUpdateView.as_view(), name="update"),
-    path("<int:pk>/delete/", AdvertisementDeleteView.as_view(), name="delete"),
+    path("", AdvertisementListView.as_view(), name="ad_list"),
+    path("<int:pk>/", AdvertisementDetailView.as_view(), name="ad_detail"),
+    path("create/", AdvertisementCreateView.as_view(), name="ad_create"),
+    path("<int:pk>/update/", AdvertisementUpdateView.as_view(), name="ad_update"),
+    path("<int:pk>/delete/", AdvertisementDeleteView.as_view(), name="ad_delete"),
 ]

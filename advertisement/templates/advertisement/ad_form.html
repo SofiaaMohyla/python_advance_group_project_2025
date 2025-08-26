@@ -1,11 +1,28 @@
-{% extends 'base_generic.html' %}
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block title %}{% if form.instance.pk %}Редагувати оголошення{% else %}Створити оголошення{% endif %}{% endblock %}
 
 {% block content %}
-  <h1>{% if form.instance.pk %}Редагувати оголошення{% else %}Додати оголошення{% endif %}</h1>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Зберегти</button>
-  </form>
-  <a href="{% url 'advertisement:ad_list' %}">Назад до списку оголошень</a>
+  <div class="container" style="max-width: 700px;">
+    <h2 class="my-3">{% if form.instance.pk %}Редагувати оголошення{% else %}Створити оголошення{% endif %}</h2>
+
+    <form method="post" enctype="multipart/form-data" class="p-4 border rounded bg-light shadow-sm">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label class="form-label">Заголовок</label>
+        {{ form.title|add_class:"form-control" }}
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Текст оголошення</label>
+        {{ form.content|add_class:"form-control" }}
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Зображення (необов’язково)</label>
+        {{ form.image|add_class:"form-control" }}
+      </div>
+      <button type="submit" class="btn btn-primary">Зберегти</button>
+      <a href="{% url 'ad_list' %}" class="btn btn-secondary">Скасувати</a>
+    </form>
+  </div>
 {% endblock %}
