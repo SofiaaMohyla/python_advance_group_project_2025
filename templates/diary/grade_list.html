@@ -2,6 +2,16 @@
 {% block title %}Мої оцінки{% endblock %}
 {% block content %}
 <h2>Мої оцінки</h2>
+<a href="{% url 'grade_create' %}" class="btn btn-success add-grade-btn">Додати оцінку</a>
+
+<style>
+  .add-grade-btn {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    display: inline-block;
+  }
+</style>
+
 <table class="table table-striped">
     <head>
         <tr>

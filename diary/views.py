@@ -71,15 +71,27 @@ class GradeCreateView(CreateView):
 class LessonDeleteView(DeleteView):
     model = Lesson
     template_name = 'diary/lesson_confirm_delete.html'
-    success_url = reverse_lazy('lesson_list')  # після видалення повертає на список уроків
+    success_url = reverse_lazy('lesson_list')
 
 class GradeDeleteView(DeleteView):
     model = Grade
     template_name = 'diary/grade_confirm_delete.html'
 
     def get_success_url(self):
-        # після видалення повертає на деталі уроку, до якого належала оцінка
         return reverse_lazy('lesson_detail', kwargs={'pk': self.object.lesson.pk})
+
+@login_required
+def grade_create(request):
+    if request.method == "POST":
+        form = GradeForm(request.POST)
+        if form.is_valid():
+            grade = form.save(commit=False)
+            grade.student = request.user
+            grade.save()
+            return redirect('grade_list')
+    else:
+        form = GradeForm()
+    return render(request, 'diary/grade_form.html', {'form': form})
 
 @login_required
 def grade_list(request):
