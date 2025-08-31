@@ -4,17 +4,13 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from events_calendar.forms import CalendarForm
-from events_calendar.models import Calendar
+from events_calendar.forms import CalendarForm, EventForm
+from events_calendar.models import Calendar, Event
 # Create your views here.
 class CalendarListView(ListView, LoginRequiredMixin):
     model = Calendar
     template_name = 'events_calendar/calendar_list.html'
     context_object_name = 'calendars'
-class CalendarDetailView(DetailView, LoginRequiredMixin):
-    model = Calendar
-    template_name = 'events_calendar/calendar_detail.html'
-    context_object_name = 'calendar'
 class CalendarCreateView(CreateView, LoginRequiredMixin):
     model = Calendar
     template_name = 'events_calendar/calendar_create.html'
@@ -40,4 +36,16 @@ class CalendarDeleteView(DeleteView, LoginRequiredMixin):
     success_url = '/calendars/'
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
-
+class CalendarDetailView(DetailView,ListView, LoginRequiredMixin):
+    model = Calendar
+    model = Event
+    template_name = 'events_calendar/calendar_detail.html'
+    context_object_name = 'calendar'
+class EventCreateView(CreateView, LoginRequiredMixin):
+    model = Event
+    template_name = 'events_calendar/calendar_create.html'
+    form_class = EventForm
+    success_url = reverse_lazy('calendar_list')
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
