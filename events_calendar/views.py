@@ -43,9 +43,24 @@ class CalendarDetailView(DetailView,ListView, LoginRequiredMixin):
     context_object_name = 'calendar'
 class EventCreateView(CreateView, LoginRequiredMixin):
     model = Event
-    template_name = 'events_calendar/calendar_create.html'
+    template_name = 'events_calendar/event_create.html'
     form_class = EventForm
-    success_url = reverse_lazy('calendar_list')
+    success_url = reverse_lazy('calendar_detail')
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         return super().form_valid(form)
+class EventDeleteView(DeleteView, LoginRequiredMixin):
+    model = Event
+    template_name = 'events_calendar/event_confirm_delete.html'
+    success_url = reverse_lazy('calendar_detail')
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+class EventUpdateView(UpdateView, LoginRequiredMixin):
+    model = Event
+    template_name = 'events_calendar/event_form.html'
+    form_class = EventForm
+    success_url = reverse_lazy('calendar_detail')
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().dispatch(request, *args, **kwargs)
