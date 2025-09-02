@@ -5,7 +5,8 @@
 
 <div class="projects">
     {% for project in projects %}
-        <div class="project-card">
+        <div class="project-card m-2 p-1" style="border:2px solid grey ;border-radius:5px">
+            
             <h3><a href="{% url 'project-detail' project.pk %}">{{ project.title }}</a></h3>
             <p>Автор: {{ project.user.username }}</p>
             <p>{{ project.desc|truncatewords:20 }}</p>

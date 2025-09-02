@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+
+from portfolio.forms import ProjectForm
 from .models import Project, ProjectImage
 
 
@@ -24,7 +26,7 @@ class ProjectDetailView(DetailView):
 class ProjectCreateView(LoginRequiredMixin, CreateView):
     model = Project
     template_name = "portfolio/project_form.html"
-    fields = ["title", "desc", "link", "file"]
+    form_class = ProjectForm
     success_url = reverse_lazy('project-list')
 
     def form_valid(self, form):
@@ -37,6 +39,7 @@ class ProjectUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Project
     template_name = "portfolio/project_form.html"
     fields = ["title", "desc", "link", "file"]
+    
 
     def form_valid(self, form):
         form.instance.user = self.request.user

@@ -15,11 +15,38 @@
 <h3>Скріншоти</h3>
 <div class="images">
     {% for img in project.project_images.all %}
-        <img src="{{ img.image.url }}" alt="Project image" style="max-width:200px; margin:5px;">
+        <img src="{{ img.image.url }}" alt="Project image"
+             style="max-width:200px; margin:5px;"
+             data-bs-toggle="modal" data-bs-target="#imageModal"
+             onclick="setModalImage(this)">
     {% empty %}
         <p>Скріншотів немає.</p>
     {% endfor %}
 </div>
+
+<!-- Modal для перегляду у повному розмірі -->
+<div class="modal fade" id="imageModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-dark">
+      <div class="modal-header border-0">
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body text-center p-0">
+        <img id="modalImage" src="" class="img-fluid rounded">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function setModalImage(img) {
+  document.getElementById("modalImage").src = img.src;
+}
+</script>
+
+
+
+
 
 {% if user == project.user %}
     <a href="{% url 'project-update' project.pk %}" class="btn btn-warning">Редагувати</a>
