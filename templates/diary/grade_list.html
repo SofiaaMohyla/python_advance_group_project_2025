@@ -2,7 +2,9 @@
 {% block title %}Мої оцінки{% endblock %}
 {% block content %}
 <h2>Мої оцінки</h2>
+{% if  user.is_superuser or user.role == 'admin' %}
 <a href="{% url 'grade_create' %}" class="btn btn-success add-grade-btn">Додати оцінку</a>
+{% endif %}
 
 <style>
   .add-grade-btn {
