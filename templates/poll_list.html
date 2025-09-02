@@ -1,8 +1,12 @@
-<h1>Активні опитування</h1>
-<ul>
-    {% for poll in polls %}
-        <li><a href="{% url 'poll_question' poll.id 1 %}">{{ poll.title }}</a></li>
-    {% empty %}
-        <li>Немає активних опитувань.</li>
-    {% endfor %}
-</ul>
+{% extends 'base.html' %}
+{% block content %}
+<h1>Доступні опитування</h1>
+{% for poll in polls %}
+    <div>
+        <h2>{{ poll.title }}</h2>
+        <p>{{ poll.description }}</p>
+        <a href="{% url 'poll_detail' poll.id 1 %}">Пройти опитування</a>
+    </div>
+{% endfor %}
+
+{% endblock content %}

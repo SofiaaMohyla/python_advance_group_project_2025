@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
 <h2>{{ poll.title }}</h2>
 <p>Питання {{ question_number }}: {{ question.text }}</p>
 <form method="post">
@@ -7,3 +9,5 @@
     {% endfor %}
     <button type="submit">Далі</button>
 </form>
+
+{% endblock content %}

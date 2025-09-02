@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
 <h2>Результати опитування: {{ poll.title }}</h2>
 {% for question, choices in results.items %}
     <h4>{{ question }}</h4>
@@ -7,3 +9,5 @@
         {% endfor %}
     </ul>
 {% endfor %}
+
+{%  endblock content %}
