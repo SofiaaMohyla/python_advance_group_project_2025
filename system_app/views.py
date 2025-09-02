@@ -104,7 +104,7 @@ class TakeTestView(LoginRequiredMixin, DetailView):
 def take_test(request, pk, question_id):
     test = get_object_or_404(Test, pk=pk)
     question = get_object_or_404(Question, pk=question_id)
-
+    
     if request.method == 'POST':
         choice_id = request.POST.get(f'question_{question.id}')
         if choice_id:
