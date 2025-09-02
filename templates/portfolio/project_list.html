@@ -6,7 +6,7 @@
 <div class="projects row">
     {% for project in projects %}
         <div class="col-md-4 mb-3 d-flex">
-            <div class="card flex-fill d-flex flex-column">
+            <div class="card flex-fill d-flex flex-column" style="display:flex">
                 {% with project.project_images.first as first_image %}
                     {% if first_image %}
                         <img src="{{ first_image.image.url }}" class="card-img-top" alt="Project image">
