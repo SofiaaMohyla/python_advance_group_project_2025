@@ -14,7 +14,7 @@
   Дата: {{ ad.created_at|date:"d.m.Y H:i" }}
 </p>
 
-{% if user.is_authenticated and (user.is_superuser or user.role == 'moderator' or user.role == 'admin') %}
+{% if  user.is_superuser or user.role == 'moderator' or user.role == 'admin' %}
   <a href="{% url 'ad_update' ad.pk %}" class="btn btn-warning">Редагувати</a>
   <a href="{% url 'ad_delete' ad.pk %}" class="btn btn-danger">Видалити</a>
 {% endif %}

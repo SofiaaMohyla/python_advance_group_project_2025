@@ -5,7 +5,7 @@
 {% block content %}
 <h2 class="mb-3">Оголошення</h2>
 
-{% if user.is_authenticated and (user.is_superuser or user.role == 'moderator' or user.role == 'admin') %}
+{% if  user.is_superuser or user.role == 'moderator' or user.role == 'admin' %}
   <a href="{% url 'ad_create' %}" class="btn btn-primary mb-3">+ Додати оголошення</a>
 {% endif %}
 
