@@ -1,6 +1,6 @@
 from django.http import HttpResponseForbidden
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -36,31 +36,42 @@ class CalendarDeleteView(DeleteView, LoginRequiredMixin):
     success_url = '/calendars/'
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
-class CalendarDetailView(DetailView,ListView, LoginRequiredMixin):
+class CalendarDetailView(DetailView, LoginRequiredMixin):
     model = Calendar
-    model = Event
     template_name = 'events_calendar/calendar_detail.html'
     context_object_name = 'calendar'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Отримати всі події, пов'язані з цим календарем
+        context['events'] = self.object.events.all()
+        return context
 class EventCreateView(CreateView, LoginRequiredMixin):
     model = Event
     template_name = 'events_calendar/event_create.html'
     form_class = EventForm
-    success_url = reverse_lazy('calendar_detail')
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         return super().form_valid(form)
+    def get_success_url(self):
+        return reverse('calendar_detail', kwargs={'pk': self.kwargs['pk']})
 class EventDeleteView(DeleteView, LoginRequiredMixin):
     model = Event
     template_name = 'events_calendar/event_confirm_delete.html'
-    success_url = reverse_lazy('calendar_detail')
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
+    def get_success_url(self):
+        return reverse('calendar_detail', kwargs={'pk': self.kwargs['pk']})
 
 class EventUpdateView(UpdateView, LoginRequiredMixin):
     model = Event
     template_name = 'events_calendar/event_form.html'
     form_class = EventForm
-    success_url = reverse_lazy('calendar_detail')
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
+    def get_success_url(self):
+        return reverse('calendar_detail', kwargs={'pk': self.kwargs['pk']})
+
+class EventDetailView(DetailView, LoginRequiredMixin):
+    model = Event
+    template_name="events_calendar/event_detail.html"
