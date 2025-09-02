@@ -7,7 +7,7 @@
     <form action="{% url 'event_delete' event.id %}" method="post" onsubmit="return confirmDelete();">
         {% csrf_token %}
         <button type="submit" class="btn btn-danger btn-delete">Видалити</button>
-        <a href="{% url 'calendar_detail' calendar.id %}" class="btn btn-secondary btn-cancel">Скасувати</a>
+        <a href="{% url 'calendar_detail' object.calendar.id %}" class="btn btn-secondary">Скасувати</a>
     </form>
 </div>
 

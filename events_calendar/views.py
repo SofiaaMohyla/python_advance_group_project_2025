@@ -57,23 +57,22 @@ class EventCreateView(CreateView, LoginRequiredMixin):
         return super().form_valid(form)
     def get_success_url(self):
         return reverse('calendar_detail', kwargs={'pk': self.kwargs['pk']})
-class EventDeleteView(DeleteView, LoginRequiredMixin):
+class EventDeleteView(LoginRequiredMixin, DeleteView):
     model = Event
     template_name = 'events_calendar/event_confirm_delete.html'
-    def get(self, request, *args, **kwargs):
-        return self.post(request, *args, **kwargs)
-    def get_success_url(self):
-        return reverse('calendar_detail', kwargs={'pk': self.kwargs['pk']})
 
-class EventUpdateView(UpdateView, LoginRequiredMixin):
+    def get_success_url(self):
+        return reverse('calendar_detail', kwargs={'pk': self.object.calendar.id})
+
+class EventUpdateView(LoginRequiredMixin, UpdateView):
     model = Event
     template_name = 'events_calendar/event_form.html'
     form_class = EventForm
-    def dispatch(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        return super().dispatch(request, *args, **kwargs)
+
     def get_success_url(self):
-        return reverse('calendar_detail', kwargs={'pk': self.kwargs['pk']})
+        return reverse('calendar_detail', kwargs={'pk': self.object.calendar.id})
+
+
 
 class EventDetailView(DetailView, LoginRequiredMixin):
     model = Event

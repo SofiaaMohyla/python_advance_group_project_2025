@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Детальніше"</h1>
+<h1>Детальніше</h1>
 
 <div class="col-md-6">
     <p><strong>Назва:</strong> {{ event.title }}</p>
     <p><strong>Опис:</strong> {{ event.description }}</p>
     <p><strong>Дата:</strong> {{ event.date }}</p>
-    <p><strong>Початок:</strong> {{ events.start_time }}</p>
-    <p><strong>Кінець:</strong> {{ events.end_time }}</p>
+    <p><strong>Початок:</strong> {{ event.start_time }}</p>
+    <p><strong>Кінець:</strong> {{ event.end_time }}</p>
 </div>
 {% endblock %}
