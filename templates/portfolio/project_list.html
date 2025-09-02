@@ -6,14 +6,14 @@
 <div class="projects row">
     {% for project in projects %}
         <div class="col-md-4 mb-3 d-flex">
-            <div class="card flex-fill d-flex flex-column" style="display:flex">
+            <div class="card" style="width: 20rem;">
                 {% with project.project_images.first as first_image %}
                     {% if first_image %}
                         <img src="{{ first_image.image.url }}" class="card-img-top" alt="Project image">
                     {% endif %}
                 {% endwith %}
 
-                <div class="card-body">
+                <div class="card-body flex-fill d-flex flex-column justify-content-between">
                     <h5 class="card-title">
                         <a href="{% url 'project-detail' project.pk %}">{{ project.title }}</a>
                     </h5>
