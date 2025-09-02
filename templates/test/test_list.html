@@ -13,7 +13,7 @@
     <div class="test">
       <h2>{{ test.title }}</h2>
       <p>{{ test.description }}</p>
-      <a href="{% url 'test/take_test' test.id %}" class="btn btn-primary">Пройти тест</a>
+      <a href="{% url 'test/take_test' test.id test.questions.first.id %}" class="btn btn-primary">Пройти тест</a>
     </div>
   {% endfor %}
 {% endblock %}

@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 <h2>Додати варіант відповіді</h2>
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Додати ще варіант</button>
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-primary">➕ Додати ще варіант</button>
 </form>
 <hr>
 <h3>Вже додані варіанти:</h3>

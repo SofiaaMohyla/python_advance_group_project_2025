@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 <h2>Додати питання до тесту</h2>
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Зберегти і додати варіанти</button>
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-primary">Зберегти і додати варіанти</button>
 </form>
 {% endblock %}
 

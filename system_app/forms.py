@@ -29,3 +29,5 @@ class ChoiceForm(forms.ModelForm):
             'is_correct': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'img': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
         }
+
+

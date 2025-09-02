@@ -101,6 +101,29 @@ class TakeTestView(LoginRequiredMixin, DetailView):
                 )
         return redirect('test_list')
 
+def take_test(request, pk, question_id):
+    test = get_object_or_404(Test, pk=pk)
+    question = get_object_or_404(Question, pk=question_id)
+
+    if request.method == 'POST':
+        choice_id = request.POST.get(f'question_{question.id}')
+        if choice_id:
+            choice = get_object_or_404(Choice, id=choice_id)
+            Answer.objects.create(
+                user=request.user,
+                test=test,
+                question=question,
+                choice=choice,
+            )
+        return redirect('test_result', pk=test.id)
+    
+    context = {
+        'test': test,
+        'question': question
+    }
+    return render(request, 'test/take_test.html', context)
+
+
 
 class TestResultView(LoginRequiredMixin, CreateView):
     model = Answer
