@@ -13,6 +13,7 @@
         <a href="{% url 'event_detail' event.id %}" class="text-decoration-none text-body">
             {{ event.title }} — {{ event.date }} ({{ event.start_time }} - {{ event.end_time }})
         </a>
+        <a href="{% url 'event_edit' event.id %}" class="btn btn-sm btn-danger">Редагувати</a>
         <a href="{% url 'event_delete' event.id %}" class="btn btn-sm btn-danger">Видалити</a>
     </div>
     {% empty %}

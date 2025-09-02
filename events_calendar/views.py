@@ -51,6 +51,9 @@ class EventCreateView(CreateView, LoginRequiredMixin):
     form_class = EventForm
     def form_valid(self, form):
         form.instance.created_by = self.request.user
+        calendar_id = self.kwargs.get('pk')
+        calendar = Calendar.objects.get(id=calendar_id)
+        form.instance.calendar = calendar
         return super().form_valid(form)
     def get_success_url(self):
         return reverse('calendar_detail', kwargs={'pk': self.kwargs['pk']})
