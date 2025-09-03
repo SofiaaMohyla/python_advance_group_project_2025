@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="delete-container">
-    <h2>Видалити завдання: "{{ calendar.name }}"?</h2>
+    <h2>Видалити календар: "{{ calendar.name }}"?</h2>
     <p class="warning-text">Це рішення є <strong>незворотним</strong>. Будь ласка, підтвердіть видалення.</p>
 
     <form action="{% url 'calendar_delete' calendar.id %}" method="post" onsubmit="return confirmDelete();">
