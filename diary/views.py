@@ -76,9 +76,7 @@ class LessonDeleteView(DeleteView):
 class GradeDeleteView(DeleteView):
     model = Grade
     template_name = 'diary/grade_confirm_delete.html'
-
-    def get_success_url(self):
-        return reverse_lazy('lesson_detail', kwargs={'pk': self.object.lesson.pk})
+    success_url = reverse_lazy("grade_list")
 
 @login_required
 def grade_create(request):
@@ -95,5 +93,21 @@ def grade_create(request):
 
 @login_required
 def grade_list(request):
-    grades = Grade.objects.filter(student=request.user).select_related('lesson').order_by('-lesson__date')
-    return render(request, 'diary/grade_list.html', {'grades': grades})
+    if request.user.is_superuser or request.user.role == "admin":
+        grades = Grade.objects.all()
+    else:
+        grades = Grade.objects.filter(student=request.user)
+
+    return render(request, "diary/grade_list.html", {"grades": grades})
+
+
+def grade_edit(request, pk):
+    grade = get_object_or_404(Grade, pk=pk)
+    if request.method == "POST":
+        form = GradeForm(request.POST, instance=grade)
+        if form.is_valid():
+            form.save()
+            return redirect("grade_list")
+    else:
+        form = GradeForm(instance=grade)
+    return render(request, "diary/grade_edit.html", {"form": form, "title": "Редагувати оцінку"})
