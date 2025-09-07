@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Нова оцінка{% endblock %}
 {% block content %}
-<h2>Додати оцінку</h2>
+<h2>Додання оцінки</h2>
 <form method="post" class="mt-3">
     {% csrf_token %}
     {{ form.as_p }}
