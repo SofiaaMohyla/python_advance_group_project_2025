@@ -13,6 +13,7 @@ class Topic(models.Model):
         return self.title
 
 
+
 class Post(models.Model):
     topic = models.ForeignKey(Topic, related_name='posts', on_delete=models.CASCADE)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

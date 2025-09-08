@@ -3,15 +3,28 @@ from django.shortcuts import render
 # Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView, DeleteView
-from .models import Post
+from django.views.generic import CreateView, UpdateView, DeleteView, ListView,DetailView
 
+from forum_app.forms import PostForm
+from .models import Post, Topic
+
+
+
+class TopicListView(LoginRequiredMixin,ListView):
+    model = Topic
+    template_name = 'forum/forum.html'
+    context_object_name = 'topics'
+
+class TopicDetailView(LoginRequiredMixin,DetailView):
+    model = Topic
+    template_name = 'forum/topic_detail.html'
+    context_object_name = 'topic'
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ['topic', 'content', 'image', 'file']
-    template_name = 'post_form.html'
-    success_url = reverse_lazy('post-list')
+    form_class = PostForm
+    template_name = 'forum/post_form.html'
+    success_url = reverse_lazy('topic-list')
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -21,7 +34,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     fields = ['content', 'image', 'file']
-    template_name = 'post_form.html'
+    template_name = 'forum/post_form.html'
     success_url = reverse_lazy('post-list')
 
     def test_func(self):
@@ -30,7 +43,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
-    template_name = 'post_confirm_delete.html'
+    template_name = 'forum/post_confirm_delete.html'
     success_url = reverse_lazy('post-list')
 
     def test_func(self):
