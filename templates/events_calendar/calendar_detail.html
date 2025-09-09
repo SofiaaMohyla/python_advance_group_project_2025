@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Календар:{{ calendar.name }}</h1>
+
+
+<a href="{% url 'event_create' calendar.id %}" class="btn btn-primary info mb-3">
+    <i class="ti ti-circle-plus"></i> Додати подію
+</a>
+<div id="eventList" class="list-group">
+    {% for event in events.all %}
+    <div class="list-group-item d-flex justify-content-between align-items-center event"
+    data-date="{{ event.date }}">
+        <a href="{% url 'event_detail' event.id %}" class="text-decoration-none text-body">
+            {{ event.title }} — {{ event.date }} ({{ event.start_time }} - {{ event.end_time }})
+        </a>
+        <a href="{% url 'event_edit' event.id %}" class="btn btn-sm btn-danger">Редагувати</a>
+        <a href="{% url 'event_delete' event.id %}" class="btn btn-sm btn-danger">Видалити</a>
+    </div>
+    {% empty %}
+    <p>Немає подій у цьому календарі.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

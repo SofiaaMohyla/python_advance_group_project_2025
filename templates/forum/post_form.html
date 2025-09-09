@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Forum{% endblock %}
+
+{% block content %}
+<h2 class="text-center"></h2>
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_div}}
+    <button type="submit" class="btn btn-primary">Додати</button>
+
+</form>
+{% endblock %}

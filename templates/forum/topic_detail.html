@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Обговорення: {{topic.title}}{% endblock %}
+
+{% block content %}
+<h2 class="text-center">Обговорення: {{topic.title}}</h2>
+<p>{{topic.description}}</p>
+<small>Автор:{{topic.author.username}} - {{topic.created_at}}</small>
+
+<div class="post-list">
+    {% for post in topic.posts.all %}
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">{{post.author.username}}</h5>
+                <p class="card-text">{{post.content}}</p>
+                <p class="card-text"><small class="text-body-secondary">{{post.created_at}}</small></p>
+            </div>
+            {% if post.image %}
+                <img src="{{post.image.url}}" class="card-img-bottom" alt="...">
+            {% endif %}
+            {% if post.file %}
+                <a href="{{post.file.url}}" class="btn btn-sm btn-outline-primary w-auto m-3">Завантажити файл</a>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+
+<a href="{% url 'post-create' %}" class="btn btn-primary my-3">Додати Пост</a>
+
+{% endblock %}
