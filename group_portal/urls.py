@@ -23,9 +23,9 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("advertisement.urls")),     # головна = список оголошень
-    path("ads/", include("advertisement.urls")), # дубль на /ads/
+    path("ads/", include("advertisement.urls")),
     path("", include("authentication.urls")),
-    path('', include("events_calendar.urls")),
+    path('calendars/', include("events_calendar.urls")),
     path('diary/', include("diary.urls")),
     path('tests/', include("system_app.urls")),
     path('portfolio/', include("portfolio.urls")),
