@@ -28,8 +28,8 @@ urlpatterns = [
     path('', include("events_calendar.urls")),
     path('diary/', include("diary.urls")),
     path('tests/', include("system_app.urls")),
+    path('portfolio/', include("portfolio.urls")),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
