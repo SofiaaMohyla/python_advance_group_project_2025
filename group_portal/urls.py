@@ -22,7 +22,6 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("advertisement.urls")),     # головна = список оголошень
     path("ads/", include("advertisement.urls")),
     path("", include("authentication.urls")),
     path('calendars/', include("events_calendar.urls")),
@@ -30,6 +29,7 @@ urlpatterns = [
     path('tests/', include("system_app.urls")),
     path('portfolio/', include("portfolio.urls")),
     path('forum/', include("forum_app.urls")),
+    path('', include("home.urls")),
 ]
 
 if settings.DEBUG:
