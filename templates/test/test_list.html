@@ -7,7 +7,9 @@
   <h1>Доступні тести</h1>
   <form method="POST" novalidate>
     {% csrf_token %}  
-    <a href="{% url 'test/test_create' %}" class="btn btn-secondary">Додати тест</a>
+    {% if user.is_superuser or user.role == 'admin' %}
+          <a href="{% url 'test/test_create' %}" class="btn btn-secondary">Додати тест</a>
+    {% endif %}
   </form>
   {% for test in tests %}
     <div class="test">
