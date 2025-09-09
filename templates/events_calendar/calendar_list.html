@@ -10,14 +10,18 @@
     <div class="col">
         <div class="card h-100 shadow-sm">
             {% if calendar.image %}
-                <img src="{{ calendar.image.url }}" class="card-img-top fixed-img" alt="{{ calendar.name }}">
+                <a href="{% url 'calendar_detail' calendar.id %}">
+                    <img src="{{ calendar.image.url }}" class="card-img-top fixed-img" alt="{{ calendar.name }}">
+                </a>
             {% else %}
-                <img src="{% static 'img/no_image.png' %}" class="card-img-top fixed-img" alt="Немає зображення">
+                <a href="{% url 'calendar_detail' calendar.id %}">
+                    <img src="{% static 'img/no_image.png' %}" class="card-img-top fixed-img" alt="Немає зображення">
+                </a>
             {% endif %}
             <div class="card-body d-flex flex-column">
                 <h5 class="card-title">{{ calendar.name }}</h5>
                 <div class="mt-auto d-flex justify-content-between">
-                    <a href="{% url 'calendar_detail' calendar.id %}" class="btn btn-outline-primary">Переглянути</a>
+                    <a href="{% url 'calendar_edit' calendar.id %}" class="btn btn-outline-primary">Редагувати</a>
                     <a href="{% url 'calendar_delete' calendar.id %}" class="btn btn-outline-danger">Видалити</a>
                 </div>
             </div>
