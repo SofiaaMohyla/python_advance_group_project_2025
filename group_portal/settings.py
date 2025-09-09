@@ -39,8 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'authentication',
     'events_calendar',
-    'advertisement'
-
+    'advertisement',
 ]
 
 MIDDLEWARE = [
