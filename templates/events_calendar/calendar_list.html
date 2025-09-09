@@ -2,9 +2,11 @@
 {% block content %}
 {% load static %}
 <h1>Календар подій</h1>
-<a href="{% url 'calendar_create' %}" class="btn btn-primary info mb-3">
-    <i class="ti ti-circle-plus"></i> Додати календар
-</a>
+{% if user.is_superuser or user.role == 'admin' %}
+    <a href="{% url 'calendar_create' %}" class="btn btn-primary info mb-3">
+        <i class="ti ti-circle-plus"></i> Додати календар
+    </a>
+{% endif %}
 <div class="row row-cols-1 row-cols-md-3 g-4">
     {% for calendar in calendars %}
     <div class="col">
