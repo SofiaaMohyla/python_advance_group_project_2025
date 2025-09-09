@@ -31,19 +31,29 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-        return super().form_valid(form)
+        response = super().form_valid(form)
+        images = form.cleaned_data.get('images')
+        if images:
+            for image in images:
+                ProjectImage.objects.create(project=self.object, image=image)
+        return response
 
 
 # 🔹 Редагування проекту (тільки автор)
 class ProjectUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Project
+    form_class = ProjectForm
     template_name = "portfolio/project_form.html"
-    fields = ["title", "desc", "link", "file"]
+    success_url = reverse_lazy("project-list")
     
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
+        response = super().form_valid(form)
+        images = form.cleaned_data.get('images')
+        if images:
+            for image in images:
+                ProjectImage.objects.create(project=self.object, image=image)
+        return response
 
     def test_func(self):
         project = self.get_object()

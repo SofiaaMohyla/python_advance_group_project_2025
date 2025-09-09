@@ -19,11 +19,11 @@ class MultipleFileField(forms.FileField):
         return result
 
 class ProjectForm(forms.ModelForm):
-    title = forms.CharField(max_length =200)
-    desc = forms.CharField(max_length =200, required=False)
-    link = forms.CharField(max_length =200, required=False)
-    file = forms.FileField(required=False)
     images = MultipleFileField()
+
+    class Meta:
+        model = Project
+        fields = ["title", "desc", 'link', 'file']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
