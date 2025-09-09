@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     'portfolio',
+    'forum_app',
 ]
 
 MIDDLEWARE = [
@@ -128,6 +129,9 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "media"
@@ -143,4 +147,5 @@ AUTH_USER_MODEL = 'authentication.CustomUser'
 
 LOGIN_REDIRECT_URL = "ad_list"
 
-LOGOUT_REDIRECT_URL = "login"
+LOGOUT_REDIRECT_URL = "/login"
+LOGIN_URL = '/login'
