@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.shortcuts import get_object_or_404, redirect
 from .models import Test, Question, Choice, Answer
 from django.urls import reverse_lazy, reverse
@@ -114,11 +114,11 @@ def take_test(request, pk, question_id):
         choice_id = request.POST.get(f'question_{question.id}')
         if choice_id:
             choice = get_object_or_404(Choice, id=choice_id)
-            Answer.objects.create(
+            Answer.objects.update_or_create(
                 user=request.user,
                 test=test,
                 question=question,
-                choice=choice,
+                defaults={'choice': choice}
             )
         next_question = test.questions.filter(id__gt=question.id).first()
         if next_question:
@@ -134,10 +134,8 @@ def take_test(request, pk, question_id):
 
 
 
-class TestResultView(LoginRequiredMixin, DetailView):
-    model = Answer
+class TestResultView(LoginRequiredMixin, TemplateView):
     template_name = 'test/test_result.html'
-    context_object_name = 'result'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
