@@ -24,8 +24,9 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("advertisement.urls")),     # головна = список оголошень
     path("ads/", include("advertisement.urls")), # дубль на /ads/
-    path("auth/", include("authentication.urls")),
+    path("", include("authentication.urls")),
     path('', include("events_calendar.urls")),
+    path('diary/', include("diary.urls")),
 ]
 
 if settings.DEBUG:

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'authentication',
     'events_calendar',
     'advertisement',
+    'diary',
 ]
 
 MIDDLEWARE = [
