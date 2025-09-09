@@ -27,6 +27,7 @@ urlpatterns = [
     path("", include("authentication.urls")),
     path('', include("events_calendar.urls")),
     path('diary/', include("diary.urls")),
+    path('tests/', include("system_app.urls")),
 ]
 
 if settings.DEBUG:

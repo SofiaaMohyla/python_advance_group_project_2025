@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Результат тесту</h1>
+  <p>Ваш бал: {{ score }}</p>
+  <p>Максимальний бал: {{ total }}</p>
+  <p>Відсоток правильних відповідей: {{ percentage|floatformat:2 }}%</p>
+  <button onclick="location.href='{% url 'test_list' %}'" class="btn btn-primary">Пройти ще один тест</button>
+{% endblock %}
