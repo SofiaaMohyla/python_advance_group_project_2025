@@ -145,4 +145,6 @@ class TestResultView(LoginRequiredMixin, TemplateView):
         context['test'] = test
         context['answer'] = answer
         context['score'] = score
+        context['total'] = test.questions.count()
+        context['percentage'] = (score / context['total'] * 100) if context['total'] > 0 else 0
         return context
