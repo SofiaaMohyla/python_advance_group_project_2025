@@ -105,6 +105,9 @@ def take_test(request, pk, question_id):
     test = get_object_or_404(Test, pk=pk)
     question = get_object_or_404(Question, pk=question_id)
     
+    if Answer.objects.filter(user=request.user, test=test).exists():
+        return redirect('test/test_result', pk=test.id)
+
     if request.method == 'POST':
         choice_id = request.POST.get(f'question_{question.id}')
         if choice_id:
@@ -115,8 +118,12 @@ def take_test(request, pk, question_id):
                 question=question,
                 choice=choice,
             )
-        return redirect('test_result', pk=test.id)
-    
+        next_question = test.questions.filter(id__gt=question.id).first()
+        if next_question:
+            return redirect('test/take_test', pk=test.id, question_id=next_question.id)
+        else:
+            return redirect('test/test_result', pk=test.id)
+
     context = {
         'test': test,
         'question': question
@@ -125,7 +132,7 @@ def take_test(request, pk, question_id):
 
 
 
-class TestResultView(LoginRequiredMixin, CreateView):
+class TestResultView(LoginRequiredMixin, DetailView):
     model = Answer
     template_name = 'test/test_result.html'
     context_object_name = 'result'
@@ -134,6 +141,8 @@ class TestResultView(LoginRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         test = get_object_or_404(Test, pk=self.kwargs['pk'])
         answer = Answer.objects.filter(user=self.request.user, test=test).select_related('choice', 'question')
+        score = sum(1 for a in answer if  a.choice.is_correct)
         context['test'] = test
         context['answer'] = answer
+        context['score'] = score
         return context
