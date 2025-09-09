@@ -105,7 +105,9 @@ def take_test(request, pk, question_id):
     test = get_object_or_404(Test, pk=pk)
     question = get_object_or_404(Question, pk=question_id)
     
-    if Answer.objects.filter(user=request.user, test=test).exists():
+    total_questions = test.questions.count()
+    user_answers = Answer.objects.filter(user=request.user, test=test).count()
+    if user_answers == total_questions and total_questions > 0:
         return redirect('test/test_result', pk=test.id)
 
     if request.method == 'POST':
