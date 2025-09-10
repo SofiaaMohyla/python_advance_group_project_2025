@@ -5,12 +5,12 @@ from .models import Material
 from .forms import MaterialForm
 
 def material_list(request):
-    materials = Material.objects.filter(is_active=True)
-    return render(request, "materialy/material_list.html", {"materials": materials})
+    materials = Material.objects.all()
+    return render(request, "material_list.html", {"materials": materials})
 
 def material_detail(request, pk):
     mat = get_object_or_404(Material, pk=pk)
-    return render(request, "materialy/material_detail.html", {"material": mat})
+    return render(request, "material_detail.html", {"material": mat})
 
 @login_required
 def material_create(request):
@@ -22,13 +22,13 @@ def material_create(request):
         form = MaterialForm(request.POST, request.FILES)
         if form.is_valid():
             m = form.save(commit=False)
-            m.uploaded_by = request.user
+            m.created_by = request.user
             m.save()
             messages.success(request, "Матеріал створено.")
             return redirect("materials:detail", pk=m.pk)
     else:
         form = MaterialForm()
-    return render(request, "materialy/material_form.html", {"form": form, "creating": True})
+    return render(request, "material_form.html", {"form": form, "creating": True})
 
 @login_required
 def material_edit(request, pk):
@@ -44,7 +44,7 @@ def material_edit(request, pk):
             return redirect("materials:detail", pk=m.pk)
     else:
         form = MaterialForm(instance=m)
-    return render(request, "y/material_form.html", {"form": form, "creating": False})
+    return render(request, "material_form.html", {"form": form, "creating": False})
 
 @login_required
 def material_delete(request, pk):
@@ -56,4 +56,4 @@ def material_delete(request, pk):
         m.delete()
         messages.success(request, "Видалено.")
         return redirect("materials:list")
-    return render(request, "materialy/material_confirm_delete.html", {"material": m})
+    return render(request, "material_confirm_delete.html", {"material": m})
