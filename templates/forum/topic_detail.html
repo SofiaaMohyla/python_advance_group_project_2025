@@ -8,23 +8,50 @@
 <small>Автор:{{topic.author.username}} - {{topic.created_at}}</small>
 
 <div class="post-list">
-    {% for post in topic.posts.all %}
-        <div class="card mb-4">
-            <div class="card-body">
-                <h5 class="card-title">{{post.author.username}}</h5>
-                <p class="card-text">{{post.content}}</p>
-                <p class="card-text"><small class="text-body-secondary">{{post.created_at}}</small></p>
-            </div>
-            {% if post.image %}
-                <img src="{{post.image.url}}" class="card-img-bottom" alt="...">
-            {% endif %}
-            {% if post.file %}
-                <a href="{{post.file.url}}" class="btn btn-sm btn-outline-primary w-auto m-3">Завантажити файл</a>
-            {% endif %}
-        </div>
-    {% endfor %}
+    
 </div>
+<button id="load-more-btn" class="btn btn-primary my-3">Завантажити ще</button>
 
 <a href="{% url 'post-create' %}" class="btn btn-primary my-3">Додати Пост</a>
+
+<script>
+    function getData(currentPage) {
+        fetch(`/forum/api/topic/{{ topic.id }}/posts?page=${currentPage}`)
+            .then(response => response.json())
+            .then(data => {
+                const postList = document.querySelector('.post-list');
+                data.results.forEach(post => {
+                    const postCard = document.createElement('div');
+                    postCard.classList.add('card', 'mb-4');
+                    postCard.innerHTML = `
+                        <div class="card-body">
+                            <h5 class="card-title">${post.author.username}</h5>
+                            <p class="card-text">${post.content}</p>        
+                            <p class="card-text"><small class="text-body-secondary">${post.created_at}</small></p>
+                        </div>
+                        ${post.image ? `<img src="${post.image.url}" class="card-img-bottom" alt="...">` : ''}
+                        ${post.file ? `<a href="${post.file.url}" class="btn btn-sm btn-outline-primary w-auto m-3">Завантажити файл</a>` : ''}
+                    `;
+                    postList.appendChild(postCard);
+                });
+                if (!data.next) {
+                    loadMoreBtn.style.display = 'none';
+                }
+            });
+    }
+
+    const topicId = {{ topic.id }};
+    let currentPage = 1;
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        getData(currentPage);
+        loadMoreBtn.addEventListener('click', () => {
+            currentPage++;
+            getData(currentPage);
+        });
+    });
+
+</script>
 
 {% endblock %}

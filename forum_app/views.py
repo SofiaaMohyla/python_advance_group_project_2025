@@ -8,7 +8,9 @@ from django.views.generic import CreateView, UpdateView, DeleteView, ListView,De
 from forum_app.forms import PostForm
 from .models import Post, Topic
 
-
+from rest_framework import generics, permissions
+from .serializers import PostSerializer
+from rest_framework.pagination import PageNumberPagination
 
 class TopicListView(LoginRequiredMixin,ListView):
     model = Topic
@@ -48,3 +50,19 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         return self.get_object().author == self.request.user
+
+
+class PostPaginator(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    
+
+class PostListApiView(generics.ListAPIView):
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = PostPaginator
+
+    def get_queryset(self):
+        topic_id = self.kwargs['pk']
+        return Post.objects.filter(topic__id=topic_id).order_by('-created_at')
+
