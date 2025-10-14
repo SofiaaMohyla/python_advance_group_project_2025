@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Список оголошень{% endblock %}
+
+{% block content %}
+<h2>Список оголошень</h2>
+
+<a href="{% url 'advertisement:create' %}" class="btn btn-success mb-3">Додати оголошення</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Заголовок</th>
+            <th>Опис</th>
+            <th>Автор</th>
+            <th>Дата створення</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for adv in advertisements %}
+        <tr>
+            <td>{{ adv.title }}</td>
+            <td>{{ adv.description|truncatewords:10 }}</td>
+            <td>{{ adv.author }}</td>
+            <td>{{ adv.created_at|date:"d.m.Y H:i" }}</td>
+            <td>
+                {% if user == adv.author %}
+                    <a href="{% url 'advertisement:update' adv.pk %}" class="btn btn-primary btn-sm">Редагувати</a>
+                    <a href="{% url 'advertisement:delete' adv.pk %}" class="btn btn-danger btn-sm">Видалити</a>
+                {% else %}
+                    <span class="text-muted">Немає прав</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" class="text-center">Немає оголошень</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

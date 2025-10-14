@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% if form.instance.pk %}Редагувати оголошення{% else %}Створити оголошення{% endif %}</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn">Зберегти</button>
+</form>
+
+<a href="{% url 'advertisement:list' %}" class="btn" style="background-color: grey;">Скасувати</a>
+{% endblock %}
