@@ -6,9 +6,9 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "group_portal.settings") # За�
 django.setup()
 
 User = get_user_model()
-username = os.environ.get('DJANGO_SUPERUSER_USERNAME')
-email = os.environ.get('DJANGO_SUPERUSER_EMAIL')
-password = os.environ.get('DJANGO_SUPERUSER_PASSWORD')
+username = os.environ.get('DJANGO_SUPERUSER_USERNAME', 'admin')
+email = os.environ.get('DJANGO_SUPERUSER_EMAIL', 'admin@example.com')
+password = os.environ.get('DJANGO_SUPERUSER_PASSWORD', 'admin')
 
 if username and password:
     if not User.objects.filter(username=username).exists():

@@ -54,7 +54,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-      'whitenoise.middleware.WhiteNoiseMiddleware', # Додати цей рядок
+    'whitenoise.middleware.WhiteNoiseMiddleware', # Додати цей рядок
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
