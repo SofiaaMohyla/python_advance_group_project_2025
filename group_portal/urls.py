@@ -19,10 +19,13 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from advertisement import views
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("ads/", include("advertisement.urls")),
+    path("", views.AdvertisementListView.as_view(), name="home"),
     path("", include("authentication.urls")),
     path('calendars/', include("events_calendar.urls")),
     path('diary/', include("diary.urls")),
@@ -32,7 +35,6 @@ urlpatterns = [
     path('', include("home.urls")),
 ]
 
-# Роздача media файлів (працює і на development, і на production)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
