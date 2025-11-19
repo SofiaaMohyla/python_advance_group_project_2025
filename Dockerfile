@@ -21,6 +21,9 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # 6. Копіюємо весь код проєкту
 COPY . /app/
 
+# 6.1. Створюємо директорію для media файлів
+RUN mkdir -p /app/media
+
 # 7. Збираємо статику (CSS/JS)
 RUN python manage.py collectstatic --noinput
 
