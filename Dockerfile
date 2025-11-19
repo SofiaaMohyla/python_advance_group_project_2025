@@ -19,4 +19,6 @@ RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
-ENTRYPOINT [ "gunicorn", "group_portal.wsgi", "-b", "0.0.0.0:8000"]
+CMD python manage.py migrate && \
+    python create_superuser.py && \
+    gunicorn group_portal.wsgi:application --bind 0.0.0.0:8000
