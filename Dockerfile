@@ -1,37 +1,22 @@
-# 1. Використовуємо легкий образ Python
-FROM python:3.10-slim
+FROM python:3.12-slim-bullseye
 
-# 2. Вимикаємо створення .pyc файлів та буферизацію виводу (корисно для логів)
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
 
-# 3. Встановлюємо робочу директорію
 WORKDIR /app
 
-# 4. Встановлюємо залежності системи (потрібно для деяких python-пакетів)
 RUN apt-get update && apt-get install -y \
     gcc \
-    libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# 5. Копіюємо requirements і встановлюємо бібліотеки
 COPY requirements.txt /app/
-RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# 6. Копіюємо весь код проєкту
+RUN pip install --no-cache-dir -r requirements.txt
+
 COPY . /app/
 
-# 6.1. Створюємо директорію для media файлів
-RUN mkdir -p /app/media
-
-# 7. Збираємо статику (CSS/JS)
 RUN python manage.py collectstatic --noinput
 
-# 8. Відкриваємо порт (формально для документації, Render ігнорує це і використовує PORT env)
 EXPOSE 8000
 
-# 9. Запускаємо Gunicorn
-# Замініть 'myproject' на назву вашої папки з settings.py
-CMD python manage.py migrate && \
-    python create_superuser.py && \
-    gunicorn group_portal.wsgi:application --bind 0.0.0.0:8000
+ENTRYPOINT [ "gunicorn", "group_portal.wsgi", "-b", "0.0.0.0:8000"]
